@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Query, Post } from '@nestjs/common';
 import { MinimizedService } from '../services/minimized.service';
+import * as _ from 'lodash';
 
 @Controller('api/minimize')
 export class MinimizedController {
@@ -8,7 +9,8 @@ export class MinimizedController {
 
   @Get(['', 'get'])
   async get(@Query('hash') hash: string) {
-    return await this.minimizedService.get(hash);
+    const minimized = await this.minimizedService.get(hash);
+    return _.get(minimized, 'data', '');
   }
 
   @Post(['min'])
