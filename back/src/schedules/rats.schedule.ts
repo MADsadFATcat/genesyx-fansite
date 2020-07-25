@@ -8,12 +8,14 @@ import { NotificationService } from '../services/notification.service';
 import * as moment from 'moment';
 import constants from '../core/constants';
 import { TelegramNotificationService } from '../services/telegram-notification.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RatsSchedule {
   private ratDetected = false;
 
   constructor(
+    private configService: ConfigService,
     private gameService: GameService,
     private notificationService: NotificationService,
     private telegramNotificationService: TelegramNotificationService,
@@ -22,6 +24,10 @@ export class RatsSchedule {
 
   @Cron('0 * * * * *')
   async checkRats() {
+    const isEnabled = this.configService.get('ENABLE_RATS_SCHEDULE') === '1';
+    if (!isEnabled)
+      return;
+
     const ratDetected = await this.gameService.isRatAtJunkyard();
     if (ratDetected) {
       await this.createRatsDetectedNotificationIfNotExists();

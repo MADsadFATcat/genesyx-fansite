@@ -19,6 +19,10 @@ export class TelegramBotService {
     private notificationService: NotificationService,
     private conversationService: ConversationService) {
 
+    const isEnabled = this.configService.get('ENABLE_TELEGRAM_BOT') === '1';
+    if (!isEnabled)
+      return;
+
     const token = this.configService.get('TELEGRAM_BOT_TOKEN');
     const adminId = this.configService.get('TELEGRAM_ADMIN_ID');
 
@@ -84,6 +88,10 @@ export class TelegramBotService {
   }
 
   public async sendToAll(text: string): Promise<any> {
+    const isEnabled = this.configService.get('ENABLE_TELEGRAM_BOT') === '1';
+    if (!isEnabled)
+      return;
+
     const conversations = await this.conversationService.getAll();
     for (const conversation of conversations) {
       try {
@@ -94,5 +102,4 @@ export class TelegramBotService {
       }
     }
   }
-
 }
