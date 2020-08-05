@@ -17,4 +17,6 @@ COPY --from=build /back/dist ./back
 COPY --from=build /front/dist/front ./front
 COPY --from=build /back/node_modules node_modules
 
+EXPOSE 3000
+
 ENTRYPOINT node back/main.js
