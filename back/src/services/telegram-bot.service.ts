@@ -63,7 +63,7 @@ export class TelegramBotService {
     this.bot.onText(/\/rats|\/крысы/, async (msg) => {
       const lastRats = await this.notificationService.getLastRats();
 
-      const response = lastRats.map(c => c.text).join('\n');
+      const response = lastRats.map(c => `${c.dateFrom} ${c.text}`).join('\n');
       if (response)
         await this.bot.sendMessage(msg.chat.id, response);
     });
