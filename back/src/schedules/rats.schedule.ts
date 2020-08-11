@@ -13,7 +13,6 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class RatsSchedule {
   private ratDetected = false;
-  private readonly logger = new Logger(RatsSchedule.name);
 
   constructor(
     private configService: ConfigService,
@@ -31,10 +30,8 @@ export class RatsSchedule {
 
     const ratDetected = await this.gameService.isRatAtJunkyard();
     if (ratDetected) {
-      this.logger.log('rat detected');
       await this.createRatsDetectedNotificationIfNotExists();
     } else {
-      this.logger.log('rat not detected');
       if (this.ratDetected) {
         await this.createRatsAttackNotification();
       }

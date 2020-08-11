@@ -1,10 +1,11 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import * as FormData from 'form-data';
 import { ConfigService } from '@nestjs/config';
 import * as _ from 'lodash';
 
 @Injectable()
 export class GameService {
+  private readonly logger = new Logger(GameService.name);
   private static sessionId: string;
 
   constructor(private configService: ConfigService, private httpService: HttpService) {
@@ -41,21 +42,28 @@ export class GameService {
   }
 
   public async isRatAtJunkyard(): Promise<boolean> {
-    if (!GameService.sessionId)
-      await this.login();
-    if (!GameService.sessionId)
-      throw new Error('cant login');
+    try {
+      if (!GameService.sessionId)
+        await this.login();
+      if (!GameService.sessionId)
+        throw new Error('cant login');
 
-    const gameUrl = this.configService.get('GAME_URL');
-    const response = await this.httpService.axiosRef.get(`${gameUrl}/Junkyard.aspx?LocationID=33`, {
-      headers: {
-        Cookie: `ASP.NET_SessionId=${GameService.sessionId}; Visited=1;`,
-      },
-    });
+      const gameUrl = this.configService.get('GAME_URL');
+      const response = await this.httpService.axiosRef.get(`${gameUrl}/Junkyard.aspx?LocationID=33&ts=${new Date().getTime()}`, {
+        headers: {
+          Cookie: `ASP.NET_SessionId=${GameService.sessionId}; Visited=1;`,
+        },
+      });
 
-    if (response.status === 302)
-      GameService.sessionId = null;
+      if (response.status === 302)
+        GameService.sessionId = null;
 
-    return response.data.indexOf('/Images/Junkyard2.png') !== -1;
+      this.logger.log(`response.data.length ${response.data.length}`);
+
+      return response.data.indexOf('/Images/Junkyard2.png') !== -1;
+    } catch (e) {
+      this.logger.error(`isRatAtJunkyard error: ${e}`);
+      return false;
+    }
   }
 }
