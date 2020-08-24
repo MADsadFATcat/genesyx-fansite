@@ -53,12 +53,15 @@ export class GameService {
         headers: {
           Cookie: `ASP.NET_SessionId=${GameService.sessionId}; Visited=1;`,
         },
+        maxRedirects: 0
       });
 
-      if (response.status === 302)
-        GameService.sessionId = null;
+      if (response.status !== 200) {
+        if (response.status === 302)
+          GameService.sessionId = null;
 
-      this.logger.log(`response.data.length ${response.data.length}`);
+        this.logger.log(`response status ${response.status} response.data.length ${response.data.length}`);
+      }
 
       return response.data.indexOf('/Images/Junkyard2.png') !== -1;
     } catch (e) {
