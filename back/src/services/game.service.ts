@@ -65,6 +65,8 @@ export class GameService {
 
       return response.data.indexOf('/Images/Junkyard2.png') !== -1;
     } catch (e) {
+      GameService.sessionId = null;
+
       this.logger.error(`isRatAtJunkyard error: ${e}`);
       return false;
     }
