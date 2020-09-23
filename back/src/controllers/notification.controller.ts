@@ -10,4 +10,9 @@ export class NotificationController {
   async get() {
     return await this.notificationService.get();
   }
+
+  @Get(['rats'])
+  async rats() {
+    return await this.notificationService.getLastRats();
+  }
 }
