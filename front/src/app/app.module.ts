@@ -11,7 +11,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
-import {HomeComponent} from './pages/home/home.component';
 import {HelperComponent} from './pages/helper/helper.component';
 import {DressingRoomComponent} from './pages/dressing-room/dressing-room.component';
 import {MatCardModule} from '@angular/material/card';
@@ -23,7 +22,6 @@ import {TelegramBotComponent} from './pages/telegram-bot/telegram-bot.component'
   declarations: [
     AppComponent,
     NavComponent,
-    HomeComponent,
     HelperComponent,
     DressingRoomComponent,
     TelegramBotComponent
