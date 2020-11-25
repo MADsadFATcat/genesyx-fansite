@@ -75,7 +75,7 @@ export class TelegramBotService {
     });
 
     this.bot.onText(/\/website|\/сайт/, async (msg) => {
-      await this.bot.sendMessage(msg.chat.id, 'Сайт тут https://genesyx.tk/');
+      await this.bot.sendMessage(msg.chat.id, 'Сайт тут https://helper.evolution-genesyx.ru/');
     });
 
     this.bot.onText(/\/email|\/почта/, async (msg) => {
