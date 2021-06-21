@@ -41,12 +41,12 @@ export class GameService {
     return true;
   }
 
-  public async isRatAtJunkyard(): Promise<boolean> {
+  public async isRatAtJunkyard(): Promise<boolean | null> {
     try {
       if (!GameService.sessionId)
         await this.login();
       if (!GameService.sessionId)
-        throw new Error('cant login');
+        return null;
 
       const gameUrl = this.configService.get('GAME_URL');
       const response = await this.httpService.axiosRef.get(`${gameUrl}/Junkyard.aspx?LocationID=33&ts=${new Date().getTime()}`, {
@@ -68,7 +68,7 @@ export class GameService {
       GameService.sessionId = null;
 
       this.logger.error(`isRatAtJunkyard error: ${e}`);
-      return false;
+      return null;
     }
   }
 }

@@ -29,6 +29,9 @@ export class RatsSchedule {
       return;
 
     const ratDetected = await this.gameService.isRatAtJunkyard();
+    if (ratDetected === null)
+      return;
+
     if (ratDetected) {
       await this.createRatsDetectedNotificationIfNotExists();
     } else {
